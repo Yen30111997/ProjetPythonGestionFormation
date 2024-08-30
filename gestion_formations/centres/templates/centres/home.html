@@ -1,0 +1,44 @@
+{% extends 'centres/base.html' %}
+
+{% load static %}
+
+{% block title %}Accueil - Yam Academy{% endblock %}
+
+{% block content %}
+<header>
+    <img src="{% static 'centres/images/accueil.jpg' %}" alt="Image d'Accueil" class="header-image">
+</header>
+<main>
+    <section class="welcome-section">
+        <h1>Bienvenue à Yam Academy</h1>
+        <p>Nous offrons des formations de qualité pour vous aider à développer vos compétences.</p>
+        <a href="{% url 'centres:register' %}" class="btn btn-primary">Inscrivez-vous maintenant</a>
+    </section>
+    <section class="features">
+        <h2>Nos Services</h2>
+        <div class="feature-card">
+            <a href="{% url 'centres:formation_list' %}" class="feature-title">Formations</a>
+            <p class="feature-description">Explorez nos formations pour acquérir de nouvelles compétences.</p>
+        </div>
+        <div class="feature-card">
+            <a href="{% url 'centres:session_list' %}" class="feature-title">Sessions</a>
+            <p class="feature-description">Participez à des sessions interactives pour approfondir vos connaissances.</p>
+        </div>
+        <div class="feature-card">
+            <a href="{% url 'centres:commentaire_list' %}" class="feature-title">Commentaires</a>
+            <p class="feature-description">Lisez les retours de nos anciens participants pour mieux comprendre nos services.</p>
+        </div>
+    </section>
+    <section class="comment-section">
+        <h2>Commentaires</h2>
+        {% for commentaire in commentaires %}
+            <div class="comment-item">
+                <p><strong>{{ commentaire.auteur.user.username }}</strong> ({{ commentaire.date_commentaire|date:"d/m/Y H:i" }}):</p>
+                <p>{{ commentaire.texte }}</p>
+            </div>
+        {% empty %}
+            <p>Aucun commentaire pour le moment.</p>
+        {% endfor %}
+    </section>
+</main>
+{% endblock %}

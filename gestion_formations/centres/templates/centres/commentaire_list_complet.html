@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tous les Commentaires</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'centres/css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 1rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+        main {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .comment-section {
+            margin-top: 1rem;
+        }
+        .comment-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: #fafafa;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: background 0.3s, transform 0.3s;
+        }
+        .comment-item:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+        .comment-item p {
+            margin: 0.5rem 0;
+        }
+        .comment-item .author {
+            font-weight: bold;
+            color: #007bff;
+            font-size: 1.1rem;
+        }
+        .comment-item .date {
+            font-size: 0.9rem;
+            color: #777;
+        }
+        .no-comments {
+            text-align: center;
+            font-style: italic;
+            color: #888;
+            font-size: 1.1rem;
+        }
+        .comment-header {
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .comment-header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Tous les commentaires</h1>
+    </header>
+    <main>
+        <div class="comment-header">
+            <h1>Liste complète des commentaires</h1>
+        </div>
+        <div class="comment-section">
+            {% if commentaires %}
+                {% for commentaire in commentaires %}
+                    <div class="comment-item">
+                        <p class="author">{{ commentaire.auteur.username }}</p>
+                        <p class="date">{{ commentaire.date_commentaire|date:"d/m/Y H:i" }}</p>
+                        <p>{{ commentaire.texte }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="no-comments">Aucun commentaire disponible.</p>
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>

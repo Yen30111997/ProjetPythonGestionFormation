@@ -1,0 +1,29 @@
+<!-- centres/templates/centres/commentaire_list.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Commentaires - Yam Academy</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'centres/css/style.css' %}">
+</head>
+<body>
+    <header>
+        <!-- Incluez votre en-tête ici -->
+    </header>
+    <main>
+        <h1>Liste des Commentaires</h1>
+        <div class="comment-section">
+            {% for commentaire in commentaires %}
+                <div class="comment-item">
+                    <p><strong>{{ commentaire.auteur.username }}</strong> ({{ commentaire.date_commentaire|date:"d/m/Y H:i" }}):</p>
+                    <p>{{ commentaire.texte }}</p>
+                </div>
+            {% empty %}
+                <p>Aucun commentaire pour le moment.</p>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>

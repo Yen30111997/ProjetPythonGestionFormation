@@ -1,0 +1,13 @@
+{% extends 'centres/base.html' %}
+
+{% block title %}Détails de la Formation{% endblock %}
+
+{% block content %}
+    <h1>{{ formation.titre }}</h1>
+    <p><strong>Description :</strong> {{ formation.description }}</p>
+    <p><strong>Date de Début :</strong> {{ formation.date_debut }}</p>
+    <p><strong>Date de Fin :</strong> {{ formation.date_fin }}</p>
+    <p><strong>Niveau :</strong> {{ formation.niveau }}</p>
+    <p><strong>Centre de Formation :</strong> {{ formation.centre_formation }}</p>
+    <a href="{% url 'centres:formation_list' %}" class="btn btn-primary">Retour à la Liste</a>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'centres/base.html' %}
+
+{% block title %}{{ centre.nom }} - Détails{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="centre-detail">
+        <h1>{{ centre.nom }}</h1>
+        <p><strong>Adresse:</strong> {{ centre.adresse }}, {{ centre.ville }} - {{ centre.code_postal }}, {{ centre.pays }}</p>
+        <p><strong>Pays:</strong> {{ centre.pays }}</p>
+        {% if centre.telephone %}
+            <p><strong>Téléphone:</strong> {{ centre.telephone }}</p>
+        {% endif %}
+        {% if centre.email %}
+            <p><strong>Email:</strong> <a href="mailto:{{ centre.email }}">{{ centre.email }}</a></p>
+        {% endif %}
+        {% if centre.site_web %}
+            <p><strong>Site Web:</strong> <a href="{{ centre.site_web }}" target="_blank">{{ centre.site_web }}</a></p>
+        {% endif %}
+        <p>{{ centre.description }}</p>
+        <p><strong>Mots Clés:</strong>
+            {% for mot in centre.mots_cles.all %}
+                <span class="tag">{{ mot.mot }}</span>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+        
+        <!-- Affichage de la carte Leaflet ici -->
+        <div id="map" style="height: 500px; width: 100%;"></div>
+
+        <p><a href="{% url 'centres:centre_list' %}" class="btn btn-secondary">Retour</a></p>
+    </div>
+</div>
+
+<!-- Inclure Leaflet.js CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<!-- Inclure Leaflet.js JavaScript -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<!-- Script pour initialiser la carte -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Récupérer les valeurs depuis le DOM
+        var latitudeStr = '{{ centre.latitude|default:"" }}';
+        var longitudeStr = '{{ centre.longitude|default:"" }}';
+
+        // Remplacer les virgules par des points pour la conversion
+        var latitude = parseFloat(latitudeStr.replace(',', '.'));
+        var longitude = parseFloat(longitudeStr.replace(',', '.'));
+
+        // Initialiser la carte uniquement si les coordonnées sont valides
+        if (!isNaN(latitude) && !isNaN(longitude)) {
+            var map = L.map('map').setView([latitude, longitude], 17)
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            L.marker([latitude, longitude]).addTo(map)
+                .bindPopup('<b>{{ centre.nom }}</b><br>{{ centre.adresse }}, {{ centre.ville }} - {{ centre.code_postal }}<br>{{ centre.pays }}<br>{{ centre.description }}')
+                .openPopup();
+        } else {
+            // Afficher un message d'erreur dans la console si les coordonnées sont invalides
+            console.error('Invalid coordinates:', latitude, longitude);
+        }
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'centres/base.html' %}
+
+{% block title %}Liste des Centres{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="search-container mb-4">
+        <!-- Formulaire de recherche -->
+        <form method="GET" action="{% url 'centres:centre_list' %}">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Rechercher des centres..." value="{{ request.GET.q }}">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Rechercher</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="centre-list">
+        {% if centres %}
+            <div class="row">
+                {% for centre in centres %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ centre.nom }}</h5>
+                                <p class="card-text"><strong>Adresse:</strong> {{ centre.adresse }}</p>
+                                <p class="card-text">{{ centre.description|truncatewords:20 }}</p>
+                                <a href="{% url 'centres:centre_detail' centre.pk %}" class="btn btn-secondary">En savoir plus</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Aucun centre trouvé.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
